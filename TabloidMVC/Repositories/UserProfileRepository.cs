@@ -4,7 +4,7 @@ using TabloidMVC.Utils;
 
 namespace TabloidMVC.Repositories
 {
-    public class UserProfileRepository : BaseRepository
+    public class UserProfileRepository : BaseRepository, IUserProfileRepository
     {
         public UserProfileRepository(IConfiguration config) : base(config) { }
 
