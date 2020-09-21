@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,11 +11,11 @@ namespace TabloidMVC.Controllers
 {
     public class AccountController : Controller
     {
-        UserProfileRepository _userProfileRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public AccountController(IConfiguration configuration)
+        public AccountController(IUserProfileRepository userProfileRepository)
         {
-            _userProfileRepository = new UserProfileRepository(configuration);
+            _userProfileRepository = userProfileRepository;
         }
 
         public IActionResult Login()

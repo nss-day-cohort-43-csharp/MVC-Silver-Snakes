@@ -5,6 +5,6 @@ p {
     line-height: 2rem;
 }
 
-.post p {
+.post__content {
     white-space: pre-wrap;
 }

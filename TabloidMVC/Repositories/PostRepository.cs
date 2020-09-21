@@ -9,7 +9,7 @@ using TabloidMVC.Utils;
 
 namespace TabloidMVC.Repositories
 {
-    public class PostRepository : BaseRepository
+    public class PostRepository : BaseRepository, IPostRepository
     {
         public PostRepository(IConfiguration config) : base(config) { }
         public List<Post> GetAllPublishedPosts()
@@ -50,7 +50,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public Post GetPublisedPostById(int id)
+        public Post GetPublishedPostById(int id)
         {
             using (var conn = Connection)
             {
@@ -171,7 +171,7 @@ namespace TabloidMVC.Repositories
                 Content = reader.GetString(reader.GetOrdinal("Content")),
                 ImageLocation = DbUtils.GetNullableString(reader, "HeaderImage"),
                 CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-                PublishDateTime = DbUtils.GetNullableDateTime(reader,"PublishDateTime"),
+                PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
                 CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                 Category = new Category()
                 {

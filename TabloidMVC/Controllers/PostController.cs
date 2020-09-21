@@ -11,13 +11,13 @@ namespace TabloidMVC.Controllers
     [Authorize]
     public class PostController : Controller
     {
-        private readonly PostRepository _postRepository;
-        private readonly CategoryRepository _categoryRepository;
+        private readonly IPostRepository _postRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public PostController(IConfiguration config)
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
         {
-            _postRepository = new PostRepository(config);
-            _categoryRepository = new CategoryRepository(config);
+            _postRepository = postRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
@@ -28,7 +28,7 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Details(int id)
         {
-            var post = _postRepository.GetPublisedPostById(id);
+            var post = _postRepository.GetPublishedPostById(id);
             if (post == null)
             {
                 int userId = GetCurrentUserProfileId();

@@ -22,7 +22,7 @@ SET IDENTITY_INSERT [Tag] OFF
 SET IDENTITY_INSERT [UserProfile] ON
 INSERT INTO [UserProfile] (
 	[Id], [FirstName], [LastName], [DisplayName], [Email], [CreateDateTime], [ImageLocation], [UserTypeId])
-VALUES (1, 'Admina', 'Strator', 'admin', 'admin@example.com', '06-14-2020', NULL, 1);
+VALUES (1, 'Admina', 'Strator', 'admin', 'admin@example.com', SYSDATETIME(), NULL, 1);
 SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Post] ON
@@ -31,5 +31,5 @@ INSERT INTO [Post] (
 VALUES (
 	1, 'C# is the Best Language', 
 'There are those' + char(10) + 'who do not believe' + char(10) + 'C# is the best.' + char(10) + 'They are wrong.',
-    'https://gizmodiva.com/wp-content/uploads/2017/10/SCOTT-A-WOODWARD_1SW1943-1170x689.jpg','06-14-2020', '06-14-2020', 1, 1, 1);
+    'https://gizmodiva.com/wp-content/uploads/2017/10/SCOTT-A-WOODWARD_1SW1943-1170x689.jpg',SYSDATETIME(), SYSDATETIME(), 1, 1, 1);
 SET IDENTITY_INSERT [Post] OFF
