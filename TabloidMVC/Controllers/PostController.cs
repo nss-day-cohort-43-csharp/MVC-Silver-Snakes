@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
@@ -77,8 +78,15 @@ namespace TabloidMVC.Controllers
         }
         public ActionResult Edit(int id)
         {
+            List<Category> categoryOptions = _categoryRepository.GetAll();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Post post = _postRepository.GetUserPostById(id, int.Parse(userId));
+
+            PostCreateViewModel vm = new PostCreateViewModel()
+            {
+                Post = post,
+                CategoryOptions = categoryOptions
+            };
 
 
             if (post == null)
@@ -86,24 +94,26 @@ namespace TabloidMVC.Controllers
                 return NotFound();
             }
 
-            return View();
+            return View(vm);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Post post)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, PostCreateViewModel vm)
         {
             try
             {
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                _postRepository.UpdatePost(post);
+                _postRepository.UpdatePost(vm.Post);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = vm.Post.Id });
             }
             catch (Exception ex)
             {
-                return View(post);
+                vm.CategoryOptions = _categoryRepository.GetAll();
+
+                return View(vm);
             }
         }
 

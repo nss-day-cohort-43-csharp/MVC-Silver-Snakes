@@ -208,7 +208,7 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            UPDATE Post p
+                            UPDATE Post 
                             SET 
                                 Title = @Title, 
                                 Content = @Content, 
