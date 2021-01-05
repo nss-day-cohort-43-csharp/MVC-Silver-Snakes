@@ -45,8 +45,10 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            //get the form for the related Post
+            //Need a VM with the Comment model to create AND the current post id and title
             return View();
         }
 
