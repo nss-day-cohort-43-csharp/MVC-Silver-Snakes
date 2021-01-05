@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -55,5 +56,32 @@ namespace TabloidMVC.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserProfile user)
+        {
+            try
+            {
+                _userProfileRepository.Add(user);
+
+                var currentUser = new Credentials()
+                {
+                    Email = user.Email
+                };
+                
+                return await Login(currentUser);
+            }
+            catch (Exception ex)
+            {
+                return View(user);
+            }
+        }
+
+
     }
 }

@@ -25,6 +25,12 @@ namespace TabloidMVC.Controllers
             var posts = _postRepository.GetAllPublishedPosts();
             return View(posts);
         }
+        public IActionResult MyPosts()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var myPosts = _postRepository.GetPostsById(int.Parse(id));
+            return View(myPosts);
+        }
 
         public IActionResult Details(int id)
         {

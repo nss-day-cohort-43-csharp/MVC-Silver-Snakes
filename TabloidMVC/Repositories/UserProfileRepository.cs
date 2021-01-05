@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
+using System;
 
 namespace TabloidMVC.Repositories
 {
@@ -50,6 +51,33 @@ namespace TabloidMVC.Repositories
                     reader.Close();
 
                     return userProfile;
+                }
+            }
+        }
+        public void Add(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserProfile (
+                             Email, FirstName, LastName, DisplayName, CreateDateTime,
+                             ImageLocation, UserTypeId)
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @Email, @FirstName, @LastName, @DisplayName, @CreateDateTime,
+                            @ImageLocation, @UserTypeId)";
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+                    cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@DisplayName", user.DisplayName);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", DateTime.UtcNow);
+                    cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(user.ImageLocation));
+                    cmd.Parameters.AddWithValue("@UserTypeId", 2);
+                   
+                    user.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
