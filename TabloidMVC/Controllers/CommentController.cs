@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -14,17 +15,27 @@ namespace TabloidMVC.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IPostRepository _postRepository;
 
-        public CommentController(ICommentRepository commentRepository)
+        public CommentController(ICommentRepository commentRepository, IPostRepository postRepository)
         {
             _commentRepository = commentRepository;
+            _postRepository = postRepository;
         }
 
         // GET: CommentController
         public ActionResult Index(int id)
         {
+            //Must use a ViewModel because we need info on the Post and Comments
+            var vm = new CommentIndexViewModel();
+            
+            Post post = _postRepository.GetPublishedPostById(id);
             List<Comment> comments = _commentRepository.getAllByPost(id);
-            return View(comments);
+            
+            vm.Post = post;
+            vm.Comments = comments;
+
+            return View(vm);
         }
 
         // GET: CommentController/Details/5
@@ -94,6 +105,12 @@ namespace TabloidMVC.Controllers
             {
                 return View();
             }
+        }
+
+        // Get the Post's Id and redirect from Comment list to the post
+        public IActionResult Post(int id)
+        {
+            return RedirectToAction("Details", "Post", new { Id = id });
         }
     }
 }
