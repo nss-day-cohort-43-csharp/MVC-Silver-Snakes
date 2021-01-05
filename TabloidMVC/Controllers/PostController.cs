@@ -74,6 +74,11 @@ namespace TabloidMVC.Controllers
             }
         }
 
+        public IActionResult Comment()
+        {
+            return RedirectToAction("Index", "Comment");
+        }
+
         private int GetCurrentUserProfileId()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
