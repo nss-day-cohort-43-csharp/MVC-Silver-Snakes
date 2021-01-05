@@ -76,7 +76,7 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Comment(int id)
         {
-            return RedirectToAction("Index", "Comment", id);
+            return RedirectToAction("Index", "Comment", new { Id = id });
         }
 
         private int GetCurrentUserProfileId()
