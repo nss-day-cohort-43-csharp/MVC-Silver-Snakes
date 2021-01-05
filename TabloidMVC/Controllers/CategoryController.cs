@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using TabloidMVC.Models;
 using TabloidMVC.Repositories;
@@ -82,16 +81,17 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CategoryController/Delete/5
-        public ActionResult Delete(int id) { 
-                Category category = _category.GetCategoryById(id);
-                if(category == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return View(category);
-                }
+        public ActionResult Delete(int id)
+        {
+            Category category = _category.GetCategoryById(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(category);
+            }
         }
 
         // POST: CategoryController/Delete/5
@@ -108,10 +108,6 @@ namespace TabloidMVC.Controllers
             {
                 return View(category);
             }
-        }
-
-        private interface ICategoryRepository<T>
-        {
         }
     }
 }
