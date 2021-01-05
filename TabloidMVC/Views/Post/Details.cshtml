@@ -35,14 +35,17 @@
         }
         else
         {
-        <section class="row justify-content-center">
-            <div style="display:flex; justify-content:center">
-                <img alt="default banner" src="~/images/default_banner.png" style="max-width:50%" />
-            </div>
-        </section>
+            <section class="row justify-content-center">
+                <div style="display:flex; justify-content:center">
+                    <img alt="default banner" src="~/images/default_banner.png" style="max-width:50%" />
+                </div>
+            </section>
         }
         <section class="row post__content">
             <p class="col-sm-12 mt-5">@Html.DisplayFor(model => model.Content)</p>
         </section>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="View">
+            View Comments
+        </a>
     </div>
 </div>

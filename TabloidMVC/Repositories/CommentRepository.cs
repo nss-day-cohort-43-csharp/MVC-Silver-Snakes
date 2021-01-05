@@ -35,7 +35,7 @@ namespace TabloidMVC.Repositories
 
                     while (reader.Read())
                     {
-                        comments.Add(NewCommentFromReader(reader);
+                        comments.Add(NewCommentFromReader(reader));
                     }
 
                     reader.Close();
