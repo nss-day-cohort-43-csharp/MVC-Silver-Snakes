@@ -21,11 +21,10 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentController
-        // Needs to get the currently selected Post
-        // and pass that Id into the get method
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            List<Comment> comments = _commentRepository.getAllByPost(id);
+            return View(comments);
         }
 
         // GET: CommentController/Details/5
