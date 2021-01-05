@@ -115,6 +115,14 @@ namespace TabloidMVC.Repositories
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
+                    cmd.CommandText = @"DELETE FROM Post WHERE CategoryId = @CategoryId";
+                    cmd.Parameters.AddWithValue("@CategoryId", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
                     cmd.CommandText = @"
                             DELETE FROM Category
                             WHERE Id = @id
