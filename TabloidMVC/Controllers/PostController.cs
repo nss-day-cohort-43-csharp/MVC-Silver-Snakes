@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using System;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
@@ -71,6 +73,37 @@ namespace TabloidMVC.Controllers
             {
                 vm.CategoryOptions = _categoryRepository.GetAll();
                 return View(vm);
+            }
+        }
+        public ActionResult Edit(int id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Post post = _postRepository.GetUserPostById(id, int.Parse(userId));
+
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Post post)
+        {
+            try
+            {
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                _postRepository.UpdatePost(post);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View(post);
             }
         }
 
