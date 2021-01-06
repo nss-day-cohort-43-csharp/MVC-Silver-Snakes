@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
@@ -28,13 +29,7 @@ namespace TabloidMVC.Controllers
         public ActionResult Index(int id)
         {
             //Must use a ViewModel because we need info on the Post and Comments
-            var vm = new CommentIndexViewModel();
-            
-            Post post = _postRepository.GetPublishedPostById(id);
-            List<Comment> comments = _commentRepository.getAllByPost(id);
-            
-            vm.Post = post;
-            vm.Comments = comments;
+            var vm = CreateIndexVM(id);
 
             return View(vm);
         }
@@ -65,16 +60,17 @@ namespace TabloidMVC.Controllers
         {
             try
             {
-                // Setup comment object
-                    // CreateDateTime
-                    // postId
-                    // userProfileId
-                //get current post to pass into 
-                return RedirectToAction(nameof(Index));
+                vm.Comment.CreateDateTime = DateAndTime.Now;
+                vm.Comment.PostId = id;
+                vm.Comment.UserProfileId = GetCurrentUserProfileId();
+
+                // comment repo add method
+
+                return RedirectToAction("Index", "Comment", new { Id = id });
             }
             catch
             {
-                return View();
+                return View(vm);
             }
         }
 
@@ -124,6 +120,20 @@ namespace TabloidMVC.Controllers
         public IActionResult Post(int id)
         {
             return RedirectToAction("Details", "Post", new { Id = id });
+        }
+
+
+        private CommentIndexViewModel CreateIndexVM(int id)
+        {
+            var vm = new CommentIndexViewModel();
+
+            Post post = _postRepository.GetPublishedPostById(id);
+            List<Comment> comments = _commentRepository.getAllByPost(id);
+
+            vm.Post = post;
+            vm.Comments = comments;
+
+            return vm;
         }
 
         private int GetCurrentUserProfileId()
