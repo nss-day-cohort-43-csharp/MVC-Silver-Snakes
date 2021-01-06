@@ -64,7 +64,7 @@ namespace TabloidMVC.Controllers
                 vm.Comment.PostId = id;
                 vm.Comment.UserProfileId = GetCurrentUserProfileId();
 
-                // comment repo add method
+                _commentRepository.Add(vm.Comment);
 
                 return RedirectToAction("Index", "Comment", new { Id = id });
             }
