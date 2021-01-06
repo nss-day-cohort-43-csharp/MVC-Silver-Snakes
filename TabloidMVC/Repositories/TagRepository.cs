@@ -119,5 +119,38 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public List<PostTag> GetUnusedTags(int tagId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    //get a sorted list of tags
+                    cmd.CommandText = @"Select t.Id, t.Name
+                                        From Tag t
+                                        WHERE t.Id != @Id";
+
+                    cmd.Parameters.AddWithValue("@Id", tagId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    //list to store tags
+                    List<PostTag> tags = new List<PostTag>();
+
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                    }
+                    reader.Close();
+                    return tags;
+                }
+
+            }
+        }
+
     }
 }

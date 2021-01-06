@@ -16,11 +16,13 @@ namespace TabloidMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IPostTagRepository _postTagRepository;
 
-        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository, IPostTagRepository postTagRepository)
         {
             _postRepository = postRepository;
             _categoryRepository = categoryRepository;
+            _postTagRepository = postTagRepository;
         }
 
         public IActionResult Index()
@@ -38,6 +40,9 @@ namespace TabloidMVC.Controllers
         public IActionResult Details(int id)
         {
             var post = _postRepository.GetPublishedPostById(id);
+
+            List<PostTag> postTags = _postTagRepository.GetPostTagsbyPostId(id);
+
             if (post == null)
             {
                 int userId = GetCurrentUserProfileId();
@@ -47,7 +52,13 @@ namespace TabloidMVC.Controllers
                     return NotFound();
                 }
             }
-            return View(post);
+
+            PostDetailViewModel vm = new PostDetailViewModel
+            {
+                Post = post,
+                PostTags = postTags
+            };
+            return View(vm);
         }
 
         public IActionResult Create()
@@ -116,6 +127,37 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
+        public ActionResult Delete(int id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Post post = _postRepository.GetUserPostById(id, int.Parse(userId));
+           
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
+        }
+
+        // POST: DogsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Post post)
+        {
+            try
+            {
+              
+                _postRepository.DeletePost(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View(post);
+            }
+        }
+
 
         private int GetCurrentUserProfileId()
         {
