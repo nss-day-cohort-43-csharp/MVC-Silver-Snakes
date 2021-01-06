@@ -17,7 +17,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT up.FirstName, up.LastName, up.DisplayName, up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, ut.UserTypeName FROM UserProfile up LEFT JOIN UserType ut ON up.UserTypeId = ut.id ORDER BY up.DisplayName ";
+                    cmd.CommandText = "SELECT up.FirstName, up.LastName, up.DisplayName, up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, ut.[Name] AS UserTypeName FROM UserProfile up LEFT JOIN UserType ut ON up.UserTypeId = ut.id ORDER BY up.DisplayName ";
                     var reader = cmd.ExecuteReader();
                     var userProfiles = new List<UserProfile>();
 
