@@ -22,5 +22,8 @@ namespace TabloidMVC.Models
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public string Name { get; set; }
+
     }
 }
