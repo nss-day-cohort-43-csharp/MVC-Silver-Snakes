@@ -54,8 +54,12 @@
         </section>
         @if (Model.Post.PublishDateTime <= DateTime.Now)
         {
-            <a class="btn btn-outline-dark" href="@Url.Action("Index", "Comment", new { postId = Model.Post.Id })">Comments</a>
+            <a asp-action="Comment" asp-route-id="@Model.Post.Id" class="btn btn-outline-primary mx-1" title="View">
+                View Comments
+            </a>
         }
         <a class="btn btn-outline-dark" href="@Url.Action("Index", "PostTag", new { postId = Model.Post.Id })">Manage Tags</a>
+    
     </div>
+
 </div>
