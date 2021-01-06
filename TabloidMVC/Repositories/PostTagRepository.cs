@@ -15,7 +15,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    //get a sorted list of tags
+  
                     cmd.CommandText = @"Select pt.Id, TagId, PostId, t.Name AS TagName
                                         FROM PostTag pt
                                         JOIN Tag t ON t.Id = TagId 
@@ -25,7 +25,7 @@ namespace TabloidMVC.Repositories
                     cmd.Parameters.AddWithValue("@Id", id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    //list to store tags
+   
                     List<PostTag> postTags = new List<PostTag>();
 
                     while (reader.Read())
@@ -57,7 +57,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    //get a sorted list of tags
+
                     cmd.CommandText = @"Select pt.Id, TagId, PostId, t.Name AS TagName
                                         FROM PostTag pt
                                         JOIN Tag t ON t.Id = TagId 
@@ -98,13 +98,13 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    //get a sorted list of tags
+ 
                     cmd.CommandText = @"Select Id, PostId, TagId
                                         FROM PostTag";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    //list to store tags
+
                     List<PostTag> postTags = new List<PostTag>();
 
                     while (reader.Read())
@@ -125,7 +125,7 @@ namespace TabloidMVC.Repositories
         }
 
 
-        //Add new tag
+
         public void AddTag(PostTag postTag)
         {
             using (SqlConnection conn = Connection)
