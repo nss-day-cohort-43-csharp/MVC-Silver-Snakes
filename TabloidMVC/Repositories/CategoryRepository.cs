@@ -16,7 +16,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id, name FROM Category ORDER BY name";
+                    cmd.CommandText = "SELECT id, name FROM Category WHERE IsDeleted = 0 ORDER BY name";
                     var reader = cmd.ExecuteReader();
                     var categories = new List<Category>();
 
@@ -114,23 +114,22 @@ namespace TabloidMVC.Repositories
                 conn.Open();
 
                 using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"DELETE FROM Post WHERE CategoryId = @CategoryId";
-                    cmd.Parameters.AddWithValue("@CategoryId", id);
 
-                    cmd.ExecuteNonQuery();
-                }
-
-                using (SqlCommand cmd = conn.CreateCommand())
                 {
+                    //cmd.CommandText = @"DELETE FROM Post WHERE CategoryId = @CategoryId";
                     cmd.CommandText = @"
-                            DELETE FROM Category
-                            WHERE Id = @id
-                        ";
+                    Update Category
+                    SET [IsDeleted] = 1
+                    WHERE Id = @id
+                    ";
+                    
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }
+
+
+
             }
         }
     }
