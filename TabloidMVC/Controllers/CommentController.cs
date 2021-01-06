@@ -43,7 +43,7 @@ namespace TabloidMVC.Controllers
         // GET: CommentController/Create
         public ActionResult Create(int id)
         {
-            var vm = new CommentCreateViewModel();
+            var vm = new CommentFormViewModel();
 
             Post post = _postRepository.GetPublishedPostById(id);
 
@@ -56,7 +56,7 @@ namespace TabloidMVC.Controllers
         [HttpPost]
         //[ValidateAntiForgeryToken]
         //Pass in PostId and Comment object from create form
-        public ActionResult Create(int id, CommentCreateViewModel vm)
+        public ActionResult Create(int id, CommentFormViewModel vm)
         {
             try
             {
@@ -77,6 +77,15 @@ namespace TabloidMVC.Controllers
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id)
         {
+            int userId = GetCurrentUserProfileId();
+            Post post = _postRepository.GetUserPostById(id, userId);
+            Comment comment = _commentRepository.GetCommentById(id, userId);
+
+            CommentFormViewModel vm = new CommentFormViewModel()
+            {
+                Post = post,
+                Comment = comment
+            };
             return View();
         }
 
