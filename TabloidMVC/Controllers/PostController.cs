@@ -127,6 +127,37 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
+        public ActionResult Delete(int id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Post post = _postRepository.GetUserPostById(id, int.Parse(userId));
+           
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
+        }
+
+        // POST: DogsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Post post)
+        {
+            try
+            {
+              
+                _postRepository.DeletePost(id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View(post);
+            }
+        }
+
 
         private int GetCurrentUserProfileId()
         {
