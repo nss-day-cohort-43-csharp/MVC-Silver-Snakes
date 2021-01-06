@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
@@ -58,11 +59,17 @@ namespace TabloidMVC.Controllers
 
         // POST: CommentController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        //[ValidateAntiForgeryToken]
+        //Pass in PostId and Comment object from create form
+        public ActionResult Create(int id, CommentCreateViewModel vm)
         {
             try
             {
+                // Setup comment object
+                    // CreateDateTime
+                    // postId
+                    // userProfileId
+                //get current post to pass into 
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -117,6 +124,12 @@ namespace TabloidMVC.Controllers
         public IActionResult Post(int id)
         {
             return RedirectToAction("Details", "Post", new { Id = id });
+        }
+
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }
