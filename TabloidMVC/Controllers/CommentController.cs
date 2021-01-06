@@ -98,7 +98,11 @@ namespace TabloidMVC.Controllers
         // GET: CommentController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Comment comment = _commentRepository.GetCommentById(id);
+
+            if (comment == null) return NotFound();
+
+            return View(comment);
         }
 
         // POST: CommentController/Delete/5
