@@ -116,7 +116,6 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
 
                 {
-                    //cmd.CommandText = @"DELETE FROM Post WHERE CategoryId = @CategoryId";
                     cmd.CommandText = @"
                     Update Category
                     SET [IsDeleted] = 1
@@ -127,9 +126,6 @@ namespace TabloidMVC.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
-
-
-
             }
         }
     }

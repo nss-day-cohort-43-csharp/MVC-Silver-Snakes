@@ -2,12 +2,49 @@
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
 using System;
+using System.Collections.Generic;
 
 namespace TabloidMVC.Repositories
 {
     public class UserProfileRepository : BaseRepository, IUserProfileRepository
     {
         public UserProfileRepository(IConfiguration config) : base(config) { }
+
+        public List<UserProfile> GetAll()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT up.FirstName, up.LastName, up.DisplayName, up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, ut.[Name] AS UserTypeName FROM UserProfile up LEFT JOIN UserType ut ON up.UserTypeId = ut.id ORDER BY up.DisplayName ";
+                    var reader = cmd.ExecuteReader();
+                    var userProfiles = new List<UserProfile>();
+
+                    while (reader.Read())
+                    {
+                        userProfiles.Add(new UserProfile()
+                        {
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            DisplayName = reader.GetString(reader.GetOrdinal("DisplayName")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                            UserTypeId = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
+                            UserType = new UserType()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
+                                Name = reader.GetString(reader.GetOrdinal("UserTypeName"))
+                            },
+                        });
+                    }
+
+                    reader.Close();
+                    return userProfiles;
+                }
+            }
+        }
 
         public UserProfile GetByEmail(string email)
         {
