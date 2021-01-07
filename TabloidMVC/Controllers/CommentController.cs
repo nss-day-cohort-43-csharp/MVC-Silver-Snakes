@@ -72,13 +72,12 @@ namespace TabloidMVC.Controllers
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id)
         {
-            int userId = GetCurrentUserProfileId();
-            Post post = _postRepository.GetUserPostById(id, userId);
-            Comment comment = _commentRepository.GetCommentById(id, userId);
+            Comment comment = _commentRepository.GetCommentById(id);
 
             CommentFormViewModel vm = new CommentFormViewModel()
             {
-                Post = post,
+
+                Post = comment.Post,
                 Comment = comment
             };
 
@@ -88,34 +87,23 @@ namespace TabloidMVC.Controllers
             }
             return View(vm);
         }
-        //public ActionResult Edit(int id)
-        //{
-        //    int userId = GetCurrentUserProfileId();
-        //    Comment comment = _commentRepository.GetCommentById(id, userId);
-
-        //    if (comment == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(comment);
-        //}
+      
 
         // POST: CommentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Comment comment)
+        public ActionResult Edit(int id, CommentFormViewModel vm)
         {
             try
             {
-                int userId = GetCurrentUserProfileId();
-                _commentRepository.UpdateComment(comment);
+                vm.Comment.CreateDateTime = DateAndTime.Now;
+                _commentRepository.UpdateComment(vm.Comment);
 
-
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Comment", new { Id = vm.Comment.PostId });
             }
             catch (Exception ex)
             {
-                return View(comment);
+                return View(vm);
             }
         }
 
