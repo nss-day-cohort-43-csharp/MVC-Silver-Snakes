@@ -112,6 +112,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+
         public void Add(UserProfile user)
         {
             using (var conn = Connection)
@@ -183,6 +184,29 @@ namespace TabloidMVC.Repositories
                     }
                     reader.Close();
                     return null;
+                }
+            }
+        }
+
+
+        public void DeactivateUserProfile(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+
+                {
+                    cmd.CommandText = @"
+                    Update UserProfile
+                    SET [IsActive] = 1
+                    WHERE Id = @id
+                    ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
