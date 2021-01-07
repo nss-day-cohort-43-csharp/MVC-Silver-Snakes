@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TabloidMVC.Models;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -17,6 +18,13 @@ namespace TabloidMVC.Controllers
             _userProfile = userProfileRepository;
         }
 
+        public UserProfile GetUserProfileById(int id)
+        {
+            return _userProfile.GetUserProfileById(id);
+        }
+
+
+
         // GET: UserProfileController
         public ActionResult Index()
         {
@@ -27,7 +35,8 @@ namespace TabloidMVC.Controllers
         // GET: UserProfileController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            UserProfile userProfile = _userProfile.GetUserProfileById(id);
+            return View(userProfile);
         }
 
         // GET: UserProfileController/Create
