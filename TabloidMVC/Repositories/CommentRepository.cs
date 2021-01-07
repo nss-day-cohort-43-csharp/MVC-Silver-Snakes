@@ -46,6 +46,41 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public Comment GetCommentById(int commentId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT c.Id, c.Subject, c.Content, c.CreateDateTime,
+	                           c.PostId, c.UserProfileId,
+	                           p.Title as PostTitle, p.Content as PostContent,
+	                           u.DisplayName
+                        FROM Comment c
+	                         LEFT JOIN Post p ON c.PostId = p.Id
+	                         LEFT JOIN UserProfile u ON c.UserProfileId = u.Id
+                       WHERE c.Id = @commentId";
+
+                    cmd.Parameters.AddWithValue("@commentId", commentId);
+
+                    var reader = cmd.ExecuteReader();
+
+                    Comment comment = null;
+
+                    if (reader.Read())
+                    {
+                        comment = NewCommentFromReader(reader);
+                    }
+
+                    reader.Close();
+
+                    return comment;
+                }
+            }
+        }
+
         public void Add(Comment comment)
         {
             using (var conn = Connection)
@@ -127,6 +162,25 @@ namespace TabloidMVC.Repositories
                     cmd.Parameters.AddWithValue("@Content", DbUtils.ValueOrDBNull(comment.Content));
                     cmd.Parameters.AddWithValue("@CreateDateTime", DbUtils.ValueOrDBNull(comment.CreateDateTime));
                     cmd.Parameters.AddWithValue("@id", comment.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Comment
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", commentId);
 
                     cmd.ExecuteNonQuery();
                 }

@@ -34,11 +34,6 @@ namespace TabloidMVC.Controllers
             return View(vm);
         }
 
-        // GET: CommentController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: CommentController/Create
         public ActionResult Create(int id)
@@ -127,21 +122,29 @@ namespace TabloidMVC.Controllers
         // GET: CommentController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Comment comment = _commentRepository.GetCommentById(id);
+
+            if (comment == null) return NotFound();
+
+            return View(comment);
         }
 
         // POST: CommentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Comment comment)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Comment commentForPostId = _commentRepository.GetCommentById(id);
+
+                _commentRepository.DeleteComment(id);
+
+                return RedirectToAction("Index", "Comment", new { Id = commentForPostId.PostId });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(comment);
             }
         }
 
