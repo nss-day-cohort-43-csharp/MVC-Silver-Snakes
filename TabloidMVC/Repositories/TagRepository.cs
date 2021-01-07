@@ -64,7 +64,8 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Tag WHERE Id = @id";
+                    cmd.CommandText = @"DELETE FROM PostTag WHERE TagId = @id
+                        DELETE FROM Tag WHERE Id = @id ";
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
