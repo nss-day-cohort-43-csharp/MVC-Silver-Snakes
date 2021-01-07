@@ -1,4 +1,4 @@
-﻿@model TabloidMVC.Models.Comment
+﻿@model TabloidMVC.Models.ViewModels.CommentFormViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,27 +13,27 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="Id" type="hidden" class="form-control" />
+                <input asp-for="Comment.Id" type="hidden" class="form-control" />
             </div>
             <div class="form-group">
                 @*<label asp-for="Comment.PostId" class="control-label"></label>*@
-                <input asp-for="PostId" type="hidden" class="form-control" />
+                <input asp-for="Comment.PostId" type="hidden" class="form-control" />
                 @*<span asp-validation-for="Comment.PostId" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 @*<label asp-for="Comment.UserProfileId" class="control-label"></label>*@
-                <input asp-for="UserProfileId" type="hidden" class="form-control" />
+                <input asp-for="Comment.UserProfileId" type="hidden" class="form-control" />
                 @*<span asp-validation-for="Comment.UserProfileId" class="text-danger"></span>*@
             </div>
             <div class="form-group">
-                <label asp-for="Subject" class="control-label"></label>
-                <input asp-for="Subject" class="form-control" />
-                <span asp-validation-for="Subject" class="text-danger"></span>
+                <label asp-for="Comment.Subject" class="control-label"></label>
+                <input asp-for="Comment.Subject" class="form-control" />
+                <span asp-validation-for="Comment.Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label asp-for="Comment.Content" class="control-label"></label>
+                <input asp-for="Comment.Content" class="form-control" />
+                <span asp-validation-for="Comment.Content" class="text-danger"></span>
             </div>
             @*<div class="form-group">
                 <label asp-for="CreateDateTime" class="control-label"></label>
@@ -48,7 +48,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Cancel</a>
+    <a asp-route-id="@Model.Post.Id" asp-action="Index">Cancel</a>
 </div>
 
 @section Scripts {

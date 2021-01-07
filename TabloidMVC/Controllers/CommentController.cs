@@ -75,35 +75,35 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: CommentController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    int userId = GetCurrentUserProfileId();
-        //    Post post = _postRepository.GetUserPostById(id, userId);
-        //    Comment comment = _commentRepository.GetCommentById(id, userId);
-
-        //    CommentFormViewModel vm = new CommentFormViewModel()
-        //    {
-        //        Post = post,
-        //        Comment = comment
-        //    };
-
-        //    if (comment == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(vm);
-        //}
         public ActionResult Edit(int id)
         {
             int userId = GetCurrentUserProfileId();
+            Post post = _postRepository.GetUserPostById(id, userId);
             Comment comment = _commentRepository.GetCommentById(id, userId);
+
+            CommentFormViewModel vm = new CommentFormViewModel()
+            {
+                Post = post,
+                Comment = comment
+            };
 
             if (comment == null)
             {
                 return NotFound();
             }
-            return View(comment);
+            return View(vm);
         }
+        //public ActionResult Edit(int id)
+        //{
+        //    int userId = GetCurrentUserProfileId();
+        //    Comment comment = _commentRepository.GetCommentById(id, userId);
+
+        //    if (comment == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(comment);
+        //}
 
         // POST: CommentController/Edit/5
         [HttpPost]
