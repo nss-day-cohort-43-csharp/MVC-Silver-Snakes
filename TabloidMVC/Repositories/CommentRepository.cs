@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
+using TabloidMVC.Utils;
 
 namespace TabloidMVC.Repositories
 {
@@ -104,6 +105,35 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        
+        public void UpdateComment(Comment comment)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Comment 
+                            SET 
+                                PostId = @PostId, 
+                                UserProfileId = @UserProfileId, 
+                                Subject = @Subject, 
+                                Content = @Content, 
+                                CreateDateTime = @CreateDateTime
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@PostId", comment.PostId);
+                    cmd.Parameters.AddWithValue("@UserProfileId", comment.UserProfileId);
+                    cmd.Parameters.AddWithValue("@Subject", comment.Subject);
+                    cmd.Parameters.AddWithValue("@Content", comment.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", comment.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@id", comment.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         public void DeleteComment(int commentId)
         {
@@ -147,5 +177,6 @@ namespace TabloidMVC.Repositories
                 }
             };
         }
+
     }
 }

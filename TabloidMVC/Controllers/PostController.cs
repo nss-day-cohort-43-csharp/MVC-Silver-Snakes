@@ -63,13 +63,13 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Create()
         {
-            var vm = new PostCreateViewModel();
+            var vm = new PostFormViewModel();
             vm.CategoryOptions = _categoryRepository.GetAll();
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Create(PostCreateViewModel vm)
+        public IActionResult Create(PostFormViewModel vm)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace TabloidMVC.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Post post = _postRepository.GetUserPostById(id, int.Parse(userId));
 
-            PostCreateViewModel vm = new PostCreateViewModel()
+            PostFormViewModel vm = new PostFormViewModel()
             {
                 Post = post,
                 CategoryOptions = categoryOptions
@@ -110,7 +110,7 @@ namespace TabloidMVC.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, PostCreateViewModel vm)
+        public ActionResult Edit(int id, PostFormViewModel vm)
         {
             try
             {
