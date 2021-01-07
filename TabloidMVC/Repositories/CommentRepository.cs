@@ -53,10 +53,14 @@ namespace TabloidMVC.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT 
-                            Id, PostId, UserProfileId, Subject, Content, CreateDateTime
-                       FROM Comment
-                       WHERE Id = @commentId";
+                        SELECT c.Id, c.Subject, c.Content, c.CreateDateTime,
+	                           c.PostId, c.UserProfileId,
+	                           p.Title as PostTitle, p.Content as PostContent,
+	                           u.DisplayName
+                        FROM Comment c
+	                         LEFT JOIN Post p ON c.PostId = p.Id
+	                         LEFT JOIN UserProfile u ON c.UserProfileId = u.Id
+                       WHERE c.Id = @commentId";
 
                     cmd.Parameters.AddWithValue("@commentId", commentId);
 
