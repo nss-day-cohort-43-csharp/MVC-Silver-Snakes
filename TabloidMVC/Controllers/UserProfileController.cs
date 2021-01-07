@@ -107,21 +107,21 @@ namespace TabloidMVC.Controllers
 
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeactivateUserProfile(int id)
-        //{
-        //    UserProfile userprofile = _userProfile.GetUserProfileById(id);
-        //    try
-        //    {
-        //        userprofile.DeactivateUserProfile(id);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return View(userprofile);
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateUserProfile(int id)
+        {
+            UserProfile userprofile = _userProfile.GetUserProfileById(id);
+            try
+            {
+                _userProfile.DeactivateUserProfile(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return View(userprofile);
+            }
+        }
 
 
     }
