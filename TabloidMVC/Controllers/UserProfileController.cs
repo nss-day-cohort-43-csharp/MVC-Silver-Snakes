@@ -18,10 +18,10 @@ namespace TabloidMVC.Controllers
             _userProfile = userProfileRepository;
         }
 
-        public UserProfile GetUserProfileById(int id)
-        {
-            return _userProfile.GetUserProfileById(id);
-        }
+        //public UserProfile GetUserProfileById(int id)
+        //{
+        //    return _userProfile.GetUserProfileById(id);
+        //}
 
 
 
